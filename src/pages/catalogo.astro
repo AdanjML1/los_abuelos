@@ -1,0 +1,219 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import CatalogCard from "../components/CatalogCard.astro";
+import { buildWaLink, DEFAULT_MESSAGE } from "../lib/whatsapp";
+import { ALL_PRODUCTS, CATEGORIES, PRODUCT_MODELS } from "../data/products";
+
+const waLink = buildWaLink(DEFAULT_MESSAGE);
+---
+
+<Layout title="Catálogo — Los Abuelos">
+	<Header currentPage="catalogo" />
+
+	<section class="hero-short">
+		<p class="eyebrow">Catálogo</p>
+		<h1>Nuestras piñatas</h1>
+		<p class="lead">
+			Precios de referencia por tamaño estándar (60 cm aprox.).
+			Personalizamos diseño, tamaño y colores para cualquier tema.
+		</p>
+	</section>
+
+	<section class="models">
+		<h2>Modelos</h2>
+		<div class="models-grid">
+			{
+				PRODUCT_MODELS.map((m) => (
+					<div class="model-card" style={`--card-color:${m.color};`}>
+						<p class="model-name">{m.name}</p>
+						<p class="model-height">{m.height}</p>
+						<p class="model-price">{m.price}</p>
+						<p class="model-ideal">{m.idealFor}</p>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	<div class="filters" id="filters">
+		{
+			CATEGORIES.map((cat) => (
+				<button
+					type="button"
+					class="chip"
+					data-cat={cat}
+					class:list={[{ active: cat === "Todas" }]}
+				>
+					{cat}
+				</button>
+			))
+		}
+	</div>
+
+	<section class="grid-section">
+		<div class="products-grid" id="products-grid">
+			{
+				ALL_PRODUCTS.map((item) => (
+					<div class="grid-item" data-category={item.category}>
+						<CatalogCard
+							name={item.name}
+							price={item.price}
+							category={item.category}
+							waLink={buildWaLink(
+								`Hola, me interesa la ${item.name} (${item.price}).`,
+							)}
+						/>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="band">
+		<h2>¿No encuentras el diseño que buscas?</h2>
+		<p>
+			Hacemos piñatas de cualquier personaje o tema. Mándanos una referencia y
+			te cotizamos.
+		</p>
+		<a href={waLink} target="_blank" rel="noopener" class="btn btn-solid"
+			>Pedir diseño a la medida</a
+		>
+	</section>
+
+	<Footer />
+</Layout>
+
+<style>
+	.hero-short {
+		padding: clamp(48px, 8vh, 80px) var(--section-px) 24px;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 16px;
+	}
+	.hero-short h1 {
+		font-size: clamp(32px, 4.5vw, 52px);
+	}
+	.hero-short .lead {
+		max-width: 520px;
+		font-size: 16px;
+		line-height: 1.7;
+		color: var(--color-text-secondary);
+	}
+
+	.models {
+		padding: 8px var(--section-px) 20px;
+	}
+	.models h2 {
+		font-size: clamp(22px, 2.6vw, 28px);
+		margin: 0 0 28px;
+		text-align: center;
+	}
+	.models-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: 20px;
+	}
+	.model-card {
+		border: 1px solid var(--card-color);
+		padding: 24px;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		transition: background 0.2s;
+	}
+	.model-card:hover {
+		background: var(--card-color);
+	}
+	.model-name {
+		font-family: var(--font-display);
+		font-size: 19px;
+		margin: 0;
+	}
+	.model-height,
+	.model-ideal {
+		font-size: 13px;
+		color: var(--color-text-secondary);
+		margin: 0;
+	}
+	.model-price {
+		font-size: 15px;
+		color: var(--color-accent);
+		font-weight: 600;
+		margin: 0;
+	}
+
+	.filters {
+		display: flex;
+		gap: 12px;
+		flex-wrap: wrap;
+		justify-content: center;
+		padding: 8px var(--section-px) 40px;
+	}
+	.chip {
+		padding: 9px 18px;
+		font-size: 13px;
+		letter-spacing: 0.03em;
+		border-radius: 2px;
+		cursor: pointer;
+		background: transparent;
+		color: var(--color-text);
+		border: 1px solid var(--color-border);
+	}
+	.chip.active {
+		background: var(--color-accent);
+		color: var(--color-on-accent);
+		border-color: var(--color-accent);
+	}
+
+	.grid-section {
+		padding: 0 var(--section-px) 100px;
+	}
+	.products-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 28px;
+	}
+
+	.band {
+		padding: clamp(56px, 9vh, 90px) var(--section-px);
+		text-align: center;
+		background: var(--color-bg-alt);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 16px;
+	}
+	.band h2 {
+		font-size: clamp(24px, 3vw, 32px);
+	}
+	.band p {
+		max-width: 480px;
+		font-size: 15px;
+		line-height: 1.7;
+		color: var(--color-text-secondary);
+	}
+</style>
+
+<script>
+	const chips =
+		document.querySelectorAll<HTMLButtonElement>("#filters .chip");
+	const items = document.querySelectorAll<HTMLElement>(
+		"#products-grid .grid-item",
+	);
+
+	chips.forEach((chip) => {
+		chip.addEventListener("click", () => {
+			const cat = chip.dataset.cat;
+			chips.forEach((c) => c.classList.remove("active"));
+			chip.classList.add("active");
+			items.forEach((item) => {
+				const show = cat === "Todas" || item.dataset.category === cat;
+				item.style.display = show ? "" : "none";
+			});
+		});
+	});
+</script>

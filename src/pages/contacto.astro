@@ -1,0 +1,210 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { buildWaLink, DEFAULT_MESSAGE, formatWaDisplay, WHATSAPP_NUMBER } from "../lib/whatsapp";
+
+const waLinkDirect = buildWaLink(DEFAULT_MESSAGE);
+const waDisplay = formatWaDisplay();
+---
+
+<Layout title="Contacto — Los Abuelos">
+	<Header currentPage="contacto" />
+
+	<section class="hero-short">
+		<p class="eyebrow">Contacto</p>
+		<h1>Hablemos de tu fiesta</h1>
+		<p class="lead">
+			Cuéntanos el tema, la fecha y el tamaño que buscas. Prepara tu mensaje
+			aquí y lo enviamos directo por WhatsApp.
+		</p>
+	</section>
+
+	<section class="contact-grid">
+		<div class="info-col">
+			<div>
+				<p class="label">WhatsApp</p>
+				<a
+					href={waLinkDirect}
+					target="_blank"
+					rel="noopener"
+					class="wa-number">{waDisplay}</a
+				>
+			</div>
+			<div>
+				<p class="label">Taller</p>
+				<p class="value">Dirección por confirmar</p>
+			</div>
+			<div>
+				<p class="label">Horario</p>
+				<p class="value">Lunes a sábado, 10:00–19:00</p>
+			</div>
+			<div>
+				<p class="label">Redes</p>
+				<p class="value">Instagram — por confirmar</p>
+			</div>
+		</div>
+
+		<form class="form-col" id="contact-form">
+			<h2>Cuéntanos tu pedido</h2>
+			<label>
+				Nombre
+				<input type="text" name="nombre" placeholder="Tu nombre" />
+			</label>
+			<label>
+				Fecha del evento
+				<input type="date" name="fecha" />
+			</label>
+			<label>
+				Tema o diseño deseado
+				<input
+					type="text"
+					name="tema"
+					placeholder="Ej. unicornio, dinosaurio, superhéroe..."
+				/>
+			</label>
+			<label>
+				Mensaje adicional
+				<textarea
+					name="mensaje"
+					rows="3"
+					placeholder="Tamaño, presupuesto, dirección de entrega..."
+				></textarea>
+			</label>
+			<a
+				href={waLinkDirect}
+				target="_blank"
+				rel="noopener"
+				class="btn btn-solid"
+				id="wa-submit">Enviar por WhatsApp</a
+			>
+		</form>
+	</section>
+
+	<Footer />
+</Layout>
+
+<style>
+	.hero-short {
+		padding: clamp(48px, 8vh, 80px) var(--section-px) 24px;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 16px;
+	}
+	.hero-short h1 {
+		font-size: clamp(32px, 4.5vw, 52px);
+	}
+	.hero-short .lead {
+		max-width: 520px;
+		font-size: 16px;
+		line-height: 1.7;
+		color: var(--color-text-secondary);
+	}
+
+	.contact-grid {
+		padding: 24px var(--section-px) 100px;
+		display: grid;
+		grid-template-columns: minmax(280px, 1fr) minmax(280px, 1.2fr);
+		gap: 56px;
+	}
+
+	.info-col {
+		display: flex;
+		flex-direction: column;
+		gap: 28px;
+	}
+	.label {
+		font-size: 13px;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--color-text-secondary);
+		margin: 0 0 8px;
+	}
+	.wa-number {
+		font-family: var(--font-display);
+		font-size: 22px;
+	}
+	.value {
+		margin: 0;
+		font-size: 16px;
+		line-height: 1.6;
+		color: var(--color-text);
+	}
+
+	.form-col {
+		background: var(--color-surface);
+		border: 1px solid var(--color-border-light);
+		padding: clamp(28px, 4vw, 44px);
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+	.form-col h2 {
+		font-size: 24px;
+	}
+	.form-col label {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		font-size: 13px;
+		color: var(--color-text-secondary);
+	}
+	.form-col input,
+	.form-col textarea {
+		padding: 12px 14px;
+		border: 1px solid var(--color-border);
+		background: var(--color-bg);
+		font-size: 15px;
+		font-family: var(--font-body);
+	}
+	.form-col input:focus,
+	.form-col textarea:focus {
+		outline: 1px solid var(--color-accent);
+	}
+	.form-col textarea {
+		resize: vertical;
+	}
+	#wa-submit {
+		text-align: center;
+		padding: 14px;
+		margin-top: 4px;
+	}
+
+	@media (max-width: 720px) {
+		.contact-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
+
+<script define:vars={{ waNumber: WHATSAPP_NUMBER }}>
+	const form = document.getElementById("contact-form");
+	const waSubmit = document.getElementById("wa-submit");
+
+	function buildMessage() {
+		const nombre = form.nombre.value;
+		const fecha = form.fecha.value;
+		const tema = form.tema.value;
+		const mensaje = form.mensaje.value;
+
+		return [
+			"Hola, quiero pedir una piñata.",
+			nombre && `Nombre: ${nombre}`,
+			fecha && `Fecha del evento: ${fecha}`,
+			tema && `Tema o diseño: ${tema}`,
+			mensaje && `Mensaje: ${mensaje}`,
+		]
+			.filter(Boolean)
+			.join("\n");
+	}
+
+	function updateLink() {
+		const text = encodeURIComponent(buildMessage());
+		waSubmit.href = `https://wa.me/${waNumber}?text=${text}`;
+	}
+
+	form.addEventListener("input", updateLink);
+	form.addEventListener("submit", (e) => e.preventDefault());
+</script>

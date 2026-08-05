@@ -1,0 +1,70 @@
+---
+import { buildWaLink, DEFAULT_MESSAGE } from "../lib/whatsapp";
+
+interface Props {
+	currentPage?: "inicio" | "catalogo" | "contacto";
+}
+
+const { currentPage } = Astro.props;
+const waLink = buildWaLink(DEFAULT_MESSAGE);
+---
+
+<header class="site-header">
+	<a href="/" class="logo">Los Abuelos</a>
+	<nav class="nav">
+		<a href="/" class:list={[{ active: currentPage === "inicio" }]}>Inicio</a>
+		<a href="/catalogo" class:list={[{ active: currentPage === "catalogo" }]}
+			>Catálogo</a
+		>
+		<a href="/contacto" class:list={[{ active: currentPage === "contacto" }]}
+			>Contacto</a
+		>
+		<a href={waLink} target="_blank" rel="noopener" class="btn btn-solid btn-sm"
+			>Pedir por WhatsApp</a
+		>
+	</nav>
+</header>
+
+<style>
+	.site-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		padding: 22px clamp(24px, 5vw, 72px);
+		flex-wrap: wrap;
+		border-bottom: 1px solid var(--color-border-light);
+	}
+	.logo {
+		font-family: var(--font-display);
+		font-size: 22px;
+		letter-spacing: 0.12em;
+		color: var(--color-text);
+		text-transform: uppercase;
+	}
+	.logo:hover {
+		color: var(--color-text);
+	}
+	.nav {
+		display: flex;
+		align-items: center;
+		gap: clamp(20px, 3vw, 40px);
+		flex-wrap: wrap;
+	}
+	.nav a {
+		color: var(--color-text);
+		font-size: 15px;
+		letter-spacing: 0.03em;
+	}
+	.nav a.active {
+		color: var(--color-accent);
+		font-weight: 600;
+	}
+	.btn-sm {
+		padding: 10px 20px;
+		font-size: 14px;
+		letter-spacing: 0.03em;
+		font-weight: 600;
+		text-transform: none;
+	}
+</style>

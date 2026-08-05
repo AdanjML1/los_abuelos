@@ -1,0 +1,47 @@
+---
+interface Props {
+	label: string;
+	aspectRatio?: string;
+	stripeColor1?: string;
+	stripeColor2?: string;
+	stripeWidth?: number;
+	textColor?: string;
+	padding?: string;
+}
+
+const {
+	label,
+	aspectRatio = "4/5",
+	stripeColor1 = "oklch(0.91 0.02 40)",
+	stripeColor2 = "oklch(0.87 0.02 40)",
+	stripeWidth = 14,
+	textColor = "oklch(0.45 0.02 40)",
+	padding = "16px",
+} = Astro.props;
+
+const background = `repeating-linear-gradient(135deg, ${stripeColor1} 0px ${stripeWidth}px, ${stripeColor2} ${stripeWidth}px ${stripeWidth * 2}px)`;
+---
+
+<div
+	class="placeholder"
+	style={`aspect-ratio:${aspectRatio}; background:${background}; padding:${padding};`}
+>
+	<span style={`color:${textColor};`}>{label}</span>
+</div>
+
+<style>
+	.placeholder {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		border-radius: 2px;
+	}
+	.placeholder span {
+		font-family: var(--font-mono);
+		font-size: 11px;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+</style>

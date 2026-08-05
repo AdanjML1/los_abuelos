@@ -1,0 +1,56 @@
+---
+import PlaceholderImage from "./PlaceholderImage.astro";
+
+interface Props {
+	name: string;
+	price: string;
+	category: string;
+	waLink: string;
+}
+
+const { name, price, category, waLink } = Astro.props;
+---
+
+<div class="catalog-card">
+	<PlaceholderImage label={`foto: ${name}`} />
+	<div>
+		<p class="eyebrow-sm">{category}</p>
+		<h3>{name}</h3>
+		<p class="price">desde {price}</p>
+		<a href={waLink} target="_blank" rel="noopener" class="wa-link"
+			>Pedir por WhatsApp</a
+		>
+	</div>
+</div>
+
+<style>
+	.catalog-card {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+	}
+	.catalog-card h3 {
+		font-size: 19px;
+		margin: 0 0 4px;
+	}
+	.catalog-card .price {
+		margin: 0 0 10px;
+		font-size: 14px;
+		color: var(--color-text-secondary);
+	}
+	.eyebrow-sm {
+		font-family: var(--font-mono);
+		font-size: 10px;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--color-accent);
+		margin: 0 0 4px;
+	}
+	.wa-link {
+		font-size: 13px;
+		letter-spacing: 0.03em;
+		text-transform: uppercase;
+		border-bottom: 1px solid var(--color-accent);
+		padding-bottom: 3px;
+	}
+</style>

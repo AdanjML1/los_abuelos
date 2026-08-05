@@ -1,0 +1,82 @@
+---
+import { buildWaLink, DEFAULT_MESSAGE, formatWaDisplay } from "../lib/whatsapp";
+
+const waLink = buildWaLink(DEFAULT_MESSAGE);
+const waDisplay = formatWaDisplay();
+---
+
+<footer class="site-footer">
+	<div>
+		<p class="brand">Los Abuelos</p>
+		<p class="desc">
+			Piñatas artesanales y decoración de fiestas, hechas a mano en nuestro
+			taller.
+		</p>
+	</div>
+	<div class="col">
+		<p class="col-title">Explorar</p>
+		<a href="/">Inicio</a>
+		<a href="/catalogo">Catálogo</a>
+		<a href="/contacto">Contacto</a>
+	</div>
+	<div class="col">
+		<p class="col-title">Contacto</p>
+		<span>Taller — dirección por confirmar</span>
+		<span>Lun–Sáb, 10:00–19:00</span>
+		<a href={waLink} target="_blank" rel="noopener" class="wa"
+			>WhatsApp: {waDisplay}</a
+		>
+	</div>
+</footer>
+<div class="copyright">© 2026 Los Abuelos</div>
+
+<style>
+	.site-footer {
+		padding: 56px clamp(24px, 6vw, 80px) 32px;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: 40px;
+		border-top: 1px solid var(--color-border-light);
+	}
+	.brand {
+		font-family: var(--font-display);
+		font-size: 20px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		margin: 0 0 12px;
+	}
+	.desc {
+		font-size: 14px;
+		line-height: 1.7;
+		color: var(--color-text-secondary);
+		max-width: 260px;
+		margin: 0;
+	}
+	.col {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+	.col-title {
+		font-size: 13px;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--color-text-secondary);
+		margin: 0 0 4px;
+	}
+	.col a,
+	.col span {
+		color: var(--color-text);
+		font-size: 14px;
+	}
+	.col a.wa {
+		color: var(--color-accent);
+	}
+	.copyright {
+		text-align: center;
+		padding: 18px;
+		font-size: 12px;
+		color: var(--color-copyright);
+		border-top: 1px solid var(--color-border-light);
+	}
+</style>

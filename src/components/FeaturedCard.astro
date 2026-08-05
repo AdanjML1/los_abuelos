@@ -1,0 +1,40 @@
+---
+import PlaceholderImage from "./PlaceholderImage.astro";
+
+interface Props {
+	name: string;
+	price: string;
+}
+
+const { name, price } = Astro.props;
+---
+
+<a href="/catalogo" class="featured-card">
+	<PlaceholderImage label={`foto: ${name}`} />
+	<div>
+		<h3>{name}</h3>
+		<p class="price">desde {price}</p>
+	</div>
+</a>
+
+<style>
+	.featured-card {
+		text-decoration: none;
+		color: inherit;
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+	}
+	.featured-card:hover {
+		color: inherit;
+	}
+	.featured-card h3 {
+		font-size: 19px;
+		margin: 0 0 4px;
+	}
+	.featured-card .price {
+		margin: 0;
+		font-size: 14px;
+		color: var(--color-text-secondary);
+	}
+</style>
