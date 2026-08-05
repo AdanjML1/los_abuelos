@@ -12,6 +12,7 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 <Layout title="Catálogo — Los Abuelos">
 	<Header currentPage="catalogo" />
 
+	<main id="main-content">
 	<section class="hero-short">
 		<p class="eyebrow">Catálogo</p>
 		<h1>Nuestras piñatas</h1>
@@ -26,7 +27,10 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 		<div class="models-grid">
 			{
 				PRODUCT_MODELS.map((m) => (
-					<div class="model-card" style={`--card-color:${m.color};`}>
+					<div
+						class="model-card"
+						style={`--card-color:${m.color}; --card-hover-text:${m.hoverTextColor};`}
+					>
 						<p class="model-name">{m.name}</p>
 						<p class="model-height">{m.height}</p>
 						<p class="model-price">{m.price}</p>
@@ -53,6 +57,8 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 	</div>
 
 	<section class="grid-section">
+		<p id="filter-status" class="sr-only" role="status" aria-live="polite">
+		</p>
 		<div class="products-grid" id="products-grid">
 			{
 				ALL_PRODUCTS.map((item) => (
@@ -81,6 +87,7 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 			>Pedir diseño a la medida</a
 		>
 	</section>
+	</main>
 
 	<Footer />
 </Layout>
@@ -125,8 +132,18 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 		gap: 10px;
 		transition: background 0.2s;
 	}
+	/* El color de fondo en hover es una de las 3 tonalidades de marca; el
+	   texto por defecto (oscuro) o el precio/eyebrow (morado acento) no
+	   siempre tienen contraste suficiente contra ese fondo. --card-hover-text
+	   se elige por tarjeta (ver products.ts) para cumplir WCAG AA. */
 	.model-card:hover {
 		background: var(--card-color);
+		color: var(--card-hover-text);
+	}
+	.model-card:hover .model-height,
+	.model-card:hover .model-ideal,
+	.model-card:hover .model-price {
+		color: var(--card-hover-text);
 	}
 	.model-name {
 		font-family: var(--font-display);
@@ -163,10 +180,19 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 		color: var(--color-text);
 		border: 1px solid var(--color-border);
 	}
+	.chip:hover {
+		border-color: var(--color-accent);
+		color: var(--color-accent-hover);
+	}
 	.chip.active {
 		background: var(--color-accent);
 		color: var(--color-on-accent);
 		border-color: var(--color-accent);
+	}
+	.chip.active:hover {
+		background: var(--color-accent-hover);
+		border-color: var(--color-accent-hover);
+		color: var(--color-on-accent);
 	}
 
 	.grid-section {
@@ -204,16 +230,25 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 	const items = document.querySelectorAll<HTMLElement>(
 		"#products-grid .grid-item",
 	);
+	const status = document.getElementById("filter-status");
 
 	chips.forEach((chip) => {
 		chip.addEventListener("click", () => {
 			const cat = chip.dataset.cat;
 			chips.forEach((c) => c.classList.remove("active"));
 			chip.classList.add("active");
+			let visibleCount = 0;
 			items.forEach((item) => {
 				const show = cat === "Todas" || item.dataset.category === cat;
 				item.style.display = show ? "" : "none";
+				if (show) visibleCount++;
 			});
+			if (status) {
+				status.textContent =
+					visibleCount === 1
+						? `1 piñata encontrada en ${cat}`
+						: `${visibleCount} piñatas encontradas en ${cat}`;
+			}
 		});
 	});
 </script>

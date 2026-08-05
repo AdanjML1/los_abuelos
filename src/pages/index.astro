@@ -13,6 +13,7 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 <Layout title="Los Abuelos — Piñatas hechas a mano">
 	<Header currentPage="inicio" />
 
+	<main id="main-content">
 	<section class="hero">
 		<div class="hero-image">
 			<PlaceholderImage
@@ -101,6 +102,7 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 			>Pedir por WhatsApp</a
 		>
 	</section>
+	</main>
 
 	<Footer />
 </Layout>
@@ -170,6 +172,15 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 	}
 	.editorial-purple {
 		background: var(--color-accent-3);
+	}
+	/* var(--color-accent) sobre var(--color-accent-3) da ~2.6:1, no pasa
+	   WCAG AA. Se usa el texto oscuro base, que sí cumple (~6:1). */
+	.editorial-purple .eyebrow {
+		color: var(--color-text);
+	}
+	.editorial-purple .underline-link {
+		color: var(--color-text);
+		border-bottom-color: var(--color-text);
 	}
 	.editorial-reverse .editorial-text {
 		order: 1;

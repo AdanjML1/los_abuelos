@@ -31,6 +31,10 @@ const { name, price } = Astro.props;
 	.featured-card h3 {
 		font-size: 19px;
 		margin: 0 0 4px;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
 	}
 	.featured-card .price {
 		margin: 0;

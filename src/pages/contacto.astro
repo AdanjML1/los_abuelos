@@ -11,6 +11,7 @@ const waDisplay = formatWaDisplay();
 <Layout title="Contacto — Los Abuelos">
 	<Header currentPage="contacto" />
 
+	<main id="main-content">
 	<section class="hero-short">
 		<p class="eyebrow">Contacto</p>
 		<h1>Hablemos de tu fiesta</h1>
@@ -49,18 +50,23 @@ const waDisplay = formatWaDisplay();
 			<h2>Cuéntanos tu pedido</h2>
 			<label>
 				Nombre
-				<input type="text" name="nombre" placeholder="Tu nombre" />
+				<input
+					type="text"
+					name="nombre"
+					autocomplete="name"
+					placeholder="Tu nombre"
+				/>
 			</label>
 			<label>
 				Fecha del evento
-				<input type="date" name="fecha" />
+				<input type="date" name="fecha" autocomplete="off" />
 			</label>
 			<label>
 				Tema o diseño deseado
 				<input
 					type="text"
 					name="tema"
-					placeholder="Ej. unicornio, dinosaurio, superhéroe..."
+					placeholder="Ej. unicornio, dinosaurio, superhéroe…"
 				/>
 			</label>
 			<label>
@@ -68,7 +74,7 @@ const waDisplay = formatWaDisplay();
 				<textarea
 					name="mensaje"
 					rows="3"
-					placeholder="Tamaño, presupuesto, dirección de entrega..."
+					placeholder="Tamaño, presupuesto, dirección de entrega…"
 				></textarea>
 			</label>
 			<a
@@ -80,6 +86,7 @@ const waDisplay = formatWaDisplay();
 			>
 		</form>
 	</section>
+	</main>
 
 	<Footer />
 </Layout>
@@ -183,6 +190,15 @@ const waDisplay = formatWaDisplay();
 	const form = document.getElementById("contact-form");
 	const waSubmit = document.getElementById("wa-submit");
 
+	function formatFecha(value) {
+		if (!value) return "";
+		const date = new Date(`${value}T00:00:00`);
+		if (Number.isNaN(date.getTime())) return value;
+		return new Intl.DateTimeFormat("es-MX", { dateStyle: "long" }).format(
+			date,
+		);
+	}
+
 	function buildMessage() {
 		const nombre = form.nombre.value;
 		const fecha = form.fecha.value;
@@ -192,7 +208,7 @@ const waDisplay = formatWaDisplay();
 		return [
 			"Hola, quiero pedir una piñata.",
 			nombre && `Nombre: ${nombre}`,
-			fecha && `Fecha del evento: ${fecha}`,
+			fecha && `Fecha del evento: ${formatFecha(fecha)}`,
 			tema && `Tema o diseño: ${tema}`,
 			mensaje && `Mensaje: ${mensaje}`,
 		]

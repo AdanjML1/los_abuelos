@@ -47,6 +47,7 @@ h3 {
 	font-family: var(--font-display);
 	font-weight: 400;
 	margin: 0;
+	text-wrap: balance;
 }
 
 p {
@@ -107,4 +108,36 @@ button {
 }
 .btn-outline:hover {
 	color: var(--color-accent-hover);
+}
+.btn,
+.chip {
+	touch-action: manipulation;
+}
+
+.skip-link {
+	position: absolute;
+	left: -9999px;
+	top: 0;
+	background: var(--color-accent);
+	color: var(--color-on-accent);
+	padding: 12px 20px;
+	font-size: 14px;
+	letter-spacing: 0.03em;
+	z-index: 100;
+}
+.skip-link:focus {
+	left: 12px;
+	top: 12px;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
 }

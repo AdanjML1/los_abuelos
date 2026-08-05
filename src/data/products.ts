@@ -44,6 +44,10 @@ export interface ProductModel {
 	price: string;
 	idealFor: string;
 	color: string;
+	// Color de texto legible sobre `color` cuando la tarjeta hace hover
+	// (fondo sólido). Se elige por contraste: oscuro sobre morados claros,
+	// casi blanco sobre el morado acento más oscuro.
+	hoverTextColor: string;
 }
 
 export const PRODUCT_MODELS: ProductModel[] = [
@@ -53,6 +57,7 @@ export const PRODUCT_MODELS: ProductModel[] = [
 		price: "$90 - $180 MXN",
 		idealFor: "Ideal para: centros de mesa / recuerdos",
 		color: "#9C93E5",
+		hoverTextColor: "var(--color-text)",
 	},
 	{
 		name: "Tambor Mediana",
@@ -60,6 +65,7 @@ export const PRODUCT_MODELS: ProductModel[] = [
 		price: "$250 - $450 MXN",
 		idealFor: "Ideal para: fiestas en casa / 15 a 20 niños",
 		color: "#BA8CBE",
+		hoverTextColor: "var(--color-text)",
 	},
 	{
 		name: "Especial / Temática Grande",
@@ -67,5 +73,6 @@ export const PRODUCT_MODELS: ProductModel[] = [
 		price: "—",
 		idealFor: "Ideal para: —",
 		color: "#7F4EA8",
+		hoverTextColor: "var(--color-on-accent)",
 	},
 ];
