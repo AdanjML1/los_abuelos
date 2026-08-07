@@ -1,6 +1,6 @@
 // Número de WhatsApp compartido entre todas las páginas del sitio.
 // TODO: reemplazar por el número real del taller antes de publicar.
-export const WHATSAPP_NUMBER = "525512345678";
+export const WHATSAPP_NUMBER = "529981798683";
 
 export const DEFAULT_MESSAGE =
 	"Hola, quiero información sobre una piñata para mi fiesta.";

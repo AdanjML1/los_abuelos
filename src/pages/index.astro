@@ -2,7 +2,6 @@
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import PlaceholderImage from "../components/PlaceholderImage.astro";
 import FeaturedCard from "../components/FeaturedCard.astro";
 import { buildWaLink, DEFAULT_MESSAGE } from "../lib/whatsapp";
 import { FEATURED_PRODUCTS } from "../data/products";
@@ -16,10 +15,10 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 	<main id="main-content">
 	<section class="hero">
 		<div class="hero-image">
-			<PlaceholderImage
-				label="foto: piñata hecha a mano, taller Los Abuelos"
-				aspectRatio="16/7"
-				stripeWidth={16}
+			<img
+				src="/images/logonew.png"
+				alt="Piñata Los Abuelos — El arte cobrando vida"
+				loading="eager"
 			/>
 		</div>
 		<p class="eyebrow">Piñatas a la medida</p>
@@ -44,22 +43,25 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 		<div class="featured-grid">
 			{
 				FEATURED_PRODUCTS.map((item) => (
-					<FeaturedCard name={item.name} price={item.price} />
+					<FeaturedCard
+						name={item.name}
+						price={item.price}
+						image={item.image}
+					/>
 				))
 			}
 		</div>
 	</section>
 
 	<section class="editorial editorial-purple">
-		<PlaceholderImage
-			label="foto: taller, artesano pintando piñata"
-			aspectRatio="1"
-			stripeColor1="#BA8CBE"
-			stripeColor2="#9C93E5"
-			stripeWidth={16}
-			textColor="oklch(0.98 0.01 40)"
-			padding="24px"
-		/>
+		{/* Cargamos la imagen directamente de la carpeta public/images/ */}
+		<div class="editorial-image-container">
+			<img
+				src="/images/pinata6.png"
+				alt="Piñata personaje a medida"
+				class="editorial-image"
+			/>
+		</div>
 		<div class="editorial-text">
 			<p class="eyebrow">Diseño a la medida</p>
 			<h2>Cuéntanos el tema. Nosotros la hacemos realidad.</h2>
@@ -74,22 +76,23 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 		</div>
 	</section>
 
-	<section class="editorial editorial-reverse">
+	<section class="editorial editorial-reverse editorial-bee">
 		<div class="editorial-text">
-			<p class="eyebrow">Decoración completa</p>
+			<p class="eyebrow eyebrow-bee">Decoración completa</p>
 			<h2>Más allá de la piñata</h2>
 			<p class="body-text">
 				Globos, centros de mesa y ambientación a juego con el tema de tu
 				piñata, para que la fiesta se vea completa de principio a fin.
 			</p>
-			<a href="/contacto" class="underline-link">Cotizar decoración</a>
+			<a href="/contacto" class="underline-link link-bee">Cotizar decoración</a>
 		</div>
-		<PlaceholderImage
-			label="foto: mesa decorada a juego con la piñata"
-			aspectRatio="1"
-			stripeWidth={16}
-			padding="24px"
-		/>
+		<div class="editorial-image-container flex-image-full">
+			<img
+				src="/images/pinata2x1.png"
+				alt="Piñata Abejita y Número 1"
+				class="editorial-image-full"
+			/>
+		</div>
 	</section>
 
 	<section class="cta-band">
@@ -119,7 +122,16 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 	}
 	.hero-image {
 		width: 100%;
-		max-width: 1200px;
+		max-width: 1400px;
+		background: transparent;
+	}
+	.hero-image img {
+		width: 100%;
+		max-width: min(650px, 90vw);
+		height: auto;
+		display: block;
+		margin: 0 auto;
+		background: transparent !important;
 	}
 	.hero h1 {
 		font-size: clamp(36px, 5.5vw, 64px);
@@ -173,8 +185,6 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 	.editorial-purple {
 		background: var(--color-accent-3);
 	}
-	/* var(--color-accent) sobre var(--color-accent-3) da ~2.6:1, no pasa
-	   WCAG AA. Se usa el texto oscuro base, que sí cumple (~6:1). */
 	.editorial-purple .eyebrow {
 		color: var(--color-text);
 	}
@@ -182,10 +192,15 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 		color: var(--color-text);
 		border-bottom-color: var(--color-text);
 	}
+
+	/* Sección de la Abeja */
+	.editorial-bee {
+		background-color: #F9F8F6;
+	}
 	.editorial-reverse .editorial-text {
 		order: 1;
 	}
-	.editorial-reverse :global(.placeholder) {
+	.editorial-reverse .flex-image-full {
 		order: 2;
 	}
 	.editorial-text {
@@ -212,6 +227,48 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 		border-bottom: 1px solid var(--color-accent);
 		padding-bottom: 4px;
 		width: fit-content;
+	}
+
+	/* Colores de acento amarillo abeja */
+	.eyebrow-bee {
+		color: #E29B12 !important;
+		font-weight: 600;
+	}
+	.link-bee {
+		color: #E29B12 !important;
+		border-bottom-color: #E29B12 !important;
+	}
+
+	/* Estilos generales para contenedores de imagen */
+	.editorial-image-container {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 24px;
+		box-sizing: border-box;
+	}
+	.editorial-image {
+		width: 100%;
+		max-height: 480px;
+		object-fit: contain;
+		display: block;
+	}
+
+	/* Imagen en tamaño grande extendida */
+	.flex-image-full {
+		padding: 0;
+		background: #F9F8F6;
+		min-height: 420px;
+	}
+	.editorial-image-full {
+		width: 100%;
+		height: 100%;
+		min-height: 420px;
+		object-fit: cover;
+		object-position: center;
+		display: block;
 	}
 
 	.cta-band {
@@ -253,8 +310,9 @@ const waLink = buildWaLink(DEFAULT_MESSAGE);
 		.editorial-reverse .editorial-text {
 			order: 0;
 		}
-		.editorial-reverse :global(.placeholder) {
+		.editorial-reverse .flex-image-full {
 			order: 0;
+			min-height: 320px;
 		}
 	}
 </style>

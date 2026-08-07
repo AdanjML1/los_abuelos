@@ -1,44 +1,76 @@
 ---
-import PlaceholderImage from "./PlaceholderImage.astro";
-
 interface Props {
 	name: string;
 	price: string;
+	image?: string;
 }
 
-const { name, price } = Astro.props;
+const { name, price, image } = Astro.props;
 ---
 
-<a href="/catalogo" class="featured-card">
-	<PlaceholderImage label={`foto: ${name}`} />
-	<div>
-		<h3>{name}</h3>
-		<p class="price">desde {price}</p>
+<div class="featured-card">
+	<div class="card-image-wrapper">
+		{
+			image ? (
+				<img src={image} alt={name} class="card-image" />
+			) : (
+				<div class="card-placeholder" />
+			)
+		}
 	</div>
-</a>
+	<div class="card-info">
+		<h3 class="card-title">{name}</h3>
+		<p class="card-price">desde {price}</p>
+	</div>
+</div>
 
 <style>
 	.featured-card {
-		text-decoration: none;
-		color: inherit;
 		display: flex;
 		flex-direction: column;
-		gap: 14px;
+		width: 100%;
 	}
-	.featured-card:hover {
-		color: inherit;
-	}
-	.featured-card h3 {
-		font-size: 19px;
-		margin: 0 0 4px;
-		display: -webkit-box;
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
+
+	/* Asegura un contenedor cuadrado e idéntico para todas las fotos */
+	.card-image-wrapper {
+		width: 100%;
+		aspect-ratio: 1 / 1;
 		overflow: hidden;
+		background-color: #FAFAFA;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 8px;
 	}
-	.featured-card .price {
-		margin: 0;
+
+	/* Rena todas las fotos para que tengan exacto el mismo tamaño visual */
+	.card-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		display: block;
+	}
+
+	.card-placeholder {
+		width: 100%;
+		height: 100%;
+		background-color: #EEE;
+	}
+
+	.card-info {
+		margin-top: 12px;
+	}
+
+	.card-title {
+		font-size: 16px;
+		font-weight: 500;
+		margin: 0 0 4px 0;
+	}
+
+	.card-price {
 		font-size: 14px;
-		color: var(--color-text-secondary);
+		color: var(--color-text-secondary, #666);
+		margin: 0;
 	}
 </style>
